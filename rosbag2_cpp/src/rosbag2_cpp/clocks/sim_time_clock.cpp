@@ -19,22 +19,19 @@
 namespace rosbag2_cpp
 {
 
-class SimTimeClockImpl
+SimTimeClock::SimTimeClock(rclcpp::Node::SharedPtr node)
 {
-public:
-};
-
-SimTimeClock::SimTimeClock()
-: impl_(std::make_unique<SimTimeClockImpl>())
-{}
+  clock_ = std::make_shared<rclcpp::Clock>(RCL_ROS_TIME));
+  time_source_.attachNode(node);
+  time_source_.attachClock(clock_);
+}
 
 SimTimeClock::~SimTimeClock()
 {}
 
 rcutils_time_point_value_t SimTimeClock::now() const
 {
-  // TODO(ek)
-  return 0;
+  return clock_.now().nanoseconds();
 }
 
 bool SimTimeClock::sleep_until(rcutils_time_point_value_t /* until */)

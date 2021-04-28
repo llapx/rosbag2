@@ -17,17 +17,17 @@
 
 #include <memory>
 
-#include "rosbag2_cpp/clocks/player_clock.hpp"
+#include "rclcpp/clock.hpp"
+#include "rclcpp/time_source.hpp"
 
 namespace rosbag2_cpp
 {
 
-class SimTimeClockImpl;
 class SimTimeClock : public PlayerClock
 {
 public:
   ROSBAG2_CPP_PUBLIC
-  SimTimeClock();
+  SimTimeClock(rclcpp::Node::SharedPtr node);
 
   ROSBAG2_CPP_PUBLIC
   virtual ~SimTimeClock();
@@ -79,7 +79,8 @@ public:
   bool is_paused() const override;
 
 private:
-  std::unique_ptr<SimTimeClockImpl> impl_;
+  rclcpp::TimeSource time_source_;
+  rclcpp::Clock::SharedPtr clock_;
 };
 
 }  // namespace rosbag2_cpp
