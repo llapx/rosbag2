@@ -296,7 +296,7 @@ bool TimeControllerClock::set_rate(double rate)
   return true;
 }
 
-void TimeControllerClock::add_jump_calbacks(PlayerClock::JumpHandler::SharedPtr handler)
+void TimeControllerClock::add_jump_callbacks(PlayerClock::JumpHandler::SharedPtr handler)
 {
   impl_->add_jump_callbacks(handler);
 }

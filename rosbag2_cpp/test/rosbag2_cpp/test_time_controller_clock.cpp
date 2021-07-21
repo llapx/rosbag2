@@ -340,19 +340,19 @@ TEST_F(TimeControllerClockTest, add_jump_callbacks)
   threshold.min_forward.nanoseconds = 10;
   auto callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  EXPECT_THROW(testing_clock.add_jump_calbacks(callback_handler), std::invalid_argument);
+  EXPECT_THROW(testing_clock.add_jump_callbacks(callback_handler), std::invalid_argument);
 
   threshold.min_backward.nanoseconds = -10;
   threshold.min_forward.nanoseconds = -10;
   callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  EXPECT_THROW(testing_clock.add_jump_calbacks(callback_handler), std::invalid_argument);
+  EXPECT_THROW(testing_clock.add_jump_callbacks(callback_handler), std::invalid_argument);
 
   threshold.min_backward.nanoseconds = -10;
   threshold.min_forward.nanoseconds = 10;
   callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  EXPECT_NO_THROW(testing_clock.add_jump_calbacks(callback_handler));
+  EXPECT_NO_THROW(testing_clock.add_jump_callbacks(callback_handler));
 }
 
 TEST_F(TimeControllerClockTest, jump_forward_with_callbacks_called)
@@ -384,7 +384,7 @@ TEST_F(TimeControllerClockTest, jump_forward_with_callbacks_called)
   threshold.min_backward.nanoseconds = 0;
   auto callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  testing_clock.add_jump_calbacks(callback_handler);
+  testing_clock.add_jump_callbacks(callback_handler);
   testing_clock.jump(ros_time_point_for_jump);
   EXPECT_EQ(testing_clock.now(), ros_time_point_for_jump);
   EXPECT_EQ(pre_callback_called_times, 1);
@@ -421,7 +421,7 @@ TEST_F(TimeControllerClockTest, jump_backward_with_callbacks_called)
   threshold.min_backward.nanoseconds = time_jump_delta_ns + 1;
   auto callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  testing_clock.add_jump_calbacks(callback_handler);
+  testing_clock.add_jump_callbacks(callback_handler);
   testing_clock.jump(ros_time_point_for_jump);
   ASSERT_EQ(testing_clock.now(), ros_time_point_for_jump);
   EXPECT_EQ(pre_callback_called_times, 1);
@@ -447,7 +447,7 @@ TEST_F(TimeControllerClockTest, jump_callbacks_threshold_boundary_check)
 
   auto callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  testing_clock.add_jump_calbacks(callback_handler);
+  testing_clock.add_jump_callbacks(callback_handler);
   testing_clock.jump(ros_time_point_for_jump);
   ASSERT_EQ(testing_clock.now(), ros_time_point_for_jump);
   EXPECT_EQ(pre_callback_called_times, 0);
@@ -460,7 +460,7 @@ TEST_F(TimeControllerClockTest, jump_callbacks_threshold_boundary_check)
   threshold.min_backward.nanoseconds = 0;
   callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  testing_clock.add_jump_calbacks(callback_handler);
+  testing_clock.add_jump_callbacks(callback_handler);
   testing_clock.jump(ros_start_time);
   ASSERT_EQ(testing_clock.now(), ros_start_time);
   EXPECT_EQ(pre_callback_called_times, 0);
@@ -473,7 +473,7 @@ TEST_F(TimeControllerClockTest, jump_callbacks_threshold_boundary_check)
   threshold.min_backward.nanoseconds = 0;
   callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  testing_clock.add_jump_calbacks(callback_handler);
+  testing_clock.add_jump_callbacks(callback_handler);
   testing_clock.jump(ros_time_point_for_jump);
   ASSERT_EQ(testing_clock.now(), ros_time_point_for_jump);
   EXPECT_EQ(pre_callback_called_times, 0);
@@ -486,7 +486,7 @@ TEST_F(TimeControllerClockTest, jump_callbacks_threshold_boundary_check)
   threshold.min_backward.nanoseconds = -1 * (time_jump_delta_ns + 1);
   callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  testing_clock.add_jump_calbacks(callback_handler);
+  testing_clock.add_jump_callbacks(callback_handler);
   testing_clock.jump(ros_start_time);
   ASSERT_EQ(testing_clock.now(), ros_start_time);
   EXPECT_EQ(pre_callback_called_times, 0);
@@ -499,7 +499,7 @@ TEST_F(TimeControllerClockTest, jump_callbacks_threshold_boundary_check)
   threshold.min_backward.nanoseconds = 0;
   callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  testing_clock.add_jump_calbacks(callback_handler);
+  testing_clock.add_jump_callbacks(callback_handler);
   testing_clock.jump(ros_time_point_for_jump);
   ASSERT_EQ(testing_clock.now(), ros_time_point_for_jump);
   EXPECT_EQ(pre_callback_called_times, 1);
@@ -512,7 +512,7 @@ TEST_F(TimeControllerClockTest, jump_callbacks_threshold_boundary_check)
   threshold.min_backward.nanoseconds = -1 * time_jump_delta_ns;
   callback_handler =
     rosbag2_cpp::TimeControllerClock::JumpHandler::create(pre_callback, post_callback, threshold);
-  testing_clock.add_jump_calbacks(callback_handler);
+  testing_clock.add_jump_callbacks(callback_handler);
   testing_clock.jump(ros_start_time);
   ASSERT_EQ(testing_clock.now(), ros_start_time);
   EXPECT_EQ(pre_callback_called_times, 1);

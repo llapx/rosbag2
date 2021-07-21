@@ -197,7 +197,7 @@ private:
    * \throws std::invalid argument if jump threshold has invalid value.
    */
   ROSBAG2_CPP_PUBLIC
-  virtual void add_jump_calbacks(PlayerClock::JumpHandler::SharedPtr handler) = 0;
+  virtual void add_jump_callbacks(PlayerClock::JumpHandler::SharedPtr handler) = 0;
 
   /**
    * \brief remove jump callbacks from processing list.

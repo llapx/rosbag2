@@ -20,6 +20,8 @@
 #include "rclcpp/clock.hpp"
 #include "rclcpp/time_source.hpp"
 
+#include "rosbag2_cpp/clocks/player_clock.hpp"
+
 namespace rosbag2_cpp
 {
 
@@ -46,13 +48,14 @@ public:
    * The user should not take action based on this sleep until it returns true.
    */
   ROSBAG2_CPP_PUBLIC
-  bool sleep_until(rcutils_time_point_value_t until) override;
+  bool sleep_until(rcutils_time_point_value_t) override;
+  bool sleep_until(rclcpp::Time) override;
 
   /**
    * No-op. Unsupported for this clock.
    */
   ROSBAG2_CPP_PUBLIC
-  void set_rate(double rate) override;
+  bool set_rate(double rate) override;
 
   /**
    * Return a best-guess of the current rate of time.
@@ -77,6 +80,12 @@ public:
    */
   ROSBAG2_CPP_PUBLIC
   bool is_paused() const override;
+
+  void jump(rcutils_time_point_value_t) {}
+  void jump(rclcpp::Time) {}
+
+  void add_jump_callbacks(PlayerClock::JumpHandler::SharedPtr) {}
+  void remove_jump_callbacks(PlayerClock::JumpHandler::SharedPtr) {};
 
 private:
   rclcpp::TimeSource time_source_;

@@ -21,9 +21,17 @@ namespace rosbag2_cpp
 
 SimTimeClock::SimTimeClock(rclcpp::Node::SharedPtr node)
 {
-  clock_ = std::make_shared<rclcpp::Clock>(RCL_ROS_TIME));
+  clock_ = std::make_shared<rclcpp::Clock>(RCL_ROS_TIME);
   time_source_.attachNode(node);
   time_source_.attachClock(clock_);
+
+  clock_->create_jump_callback(
+    []() {},
+    [](const rcl_time_jump_t &) {
+      std::cout << "JOMP" << std::endl;
+    },
+    { false, 0, 0 }
+  );
 }
 
 SimTimeClock::~SimTimeClock()
@@ -31,7 +39,7 @@ SimTimeClock::~SimTimeClock()
 
 rcutils_time_point_value_t SimTimeClock::now() const
 {
-  return clock_.now().nanoseconds();
+  return clock_->now().nanoseconds();
 }
 
 bool SimTimeClock::sleep_until(rcutils_time_point_value_t /* until */)
@@ -40,9 +48,14 @@ bool SimTimeClock::sleep_until(rcutils_time_point_value_t /* until */)
   return false;
 }
 
-void SimTimeClock::set_rate(double /* rate */)  // NOLINT (https://github.com/cpplint/cpplint/issues/131)
+bool SimTimeClock::sleep_until(rclcpp::Time until) {
+  return sleep_until(until.nanoseconds());
+}
+
+bool SimTimeClock::set_rate(double rate)
 {
-  // no-op
+  (void)rate;
+  return false;
 }
 
 double SimTimeClock::get_rate() const
